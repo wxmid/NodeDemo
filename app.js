@@ -1,7 +1,16 @@
 var express = require('express');
 var http = require('http');
+//req.body获取
+// 依赖body-parser和multer来解析参数
+var bodyParser = require('body-parser');
+var multer = require('multer');
     app = express();
-    PORT = 3000;
+//中间件
+app.use(bodyParser.json());//// for parsing application/json
+app.use(bodyParser.urlencoded({extended:true})); // for parsing application/x-www-form-urlencoded
+app.use(multer());// for parsing multipart/form-data
+
+PORT = 3000;
    
     //解决跨域
 app.all('*', function(req, res, next) {
@@ -57,6 +66,12 @@ app.get('/',function (req,res) {
         title:'首页'
     })
 })
+
+app.post('/reqBody',function (req,res) {
+    console.log(req.body);
+    res.json(req.body);
+})
+
 //以下是接口e
 
 app.listen(PORT,function() {
