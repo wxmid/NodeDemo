@@ -17,7 +17,7 @@ var log4js = require('log4js');
 var logger = log4js.getLogger();
 
 //以下是接口s
-app.use(express.static('/view' + '/public'));
+// app.use(express.static('/view' + '/public'));
 
 app.get('/',function (req, res) {
     res.send("My first node demo!");
