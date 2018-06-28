@@ -8,12 +8,14 @@ $(document).ready(function () {
    
     $.ajax({
         type: "POST",
-        // url:'http://192.168.16.104:3000/b',
-        url:'http://192.168.56.1:3000/b',
+        url:'http://192.168.16.104:3000/s',
+        // url:'http://192.168.56.1:3000/b',
         data:{
-            userName:"stuart_1"
+            userName:"stuart_1",
+            password:123456
         },
-        contentType: "application/json; charset=utf-8",
+        // contentType: "application/json;",
+        dataType:"json",
         crossDomain: true,
         async: true,
         success:function (res) {
