@@ -6,7 +6,7 @@ var https = require('https');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/happyabstr',function (err) {
+mongoose.connect('mongodb://localhost/happytime',function (err) {
     if(err) {
         return console.log(err)
     }
@@ -81,22 +81,62 @@ app.post('/reqBody',function (req,res) {
 app.post('/s', function (req, res) {
     // res.send({userName:req.body.userName,password:req.body.password});
     // console.log(req.body.userName);
-    res.json(req.body);
+    Happy.find({id: 'fn0001'},function(err, result){
+        if(err){
+            return console.error(err);
+        }
+        console.log('查询结果：')
+        console.log(result);
+        res.json(result);
+    })
 })
 
 //以下是接口e
 
 //数据库连接s
-var hpabstrScheme = {
-    id:String,
-    user_id:String,
-    isOriginal:Boolean,
-    headImg:String,
+//创建一个schema
+var happycheme = {
+    "id":String,
+    "user_id":String,
+    "isOriginal":Boolean,
+    "headImg":String,
     nickName:String,
     publishTime:String,
     abstract:String,
     thumbnailList:Array
 }
+// 创建一个模型（就是一个类）
+var Happy = mongoose.model('happy',happycheme);
+//new 一个实例
+var happyItem = new Happy({
+    id:'fn0001',
+    user_id:'',
+    isOriginal:true,
+    headImg:'http://localhost:3000/img/head1.jpg',
+    nickName:'GirlLog',
+    publishTime:'2018-04-19 10:52',
+    abstract:'老婆不喜欢家里的画眉鸟，所以平时鸟笼挂在阳台上，她不在家时我就拿进屋里逗一下。刚刚在家逗鸟，看到她下班回来了，我很自觉的把鸟笼拿去阳台，然后她说：“留意你很久了，每次我到家你就往阳台挂鸟笼，给谁发信号呢？！”我。。。',
+    thumbnailList:[
+        'http://localhost:3000/img/gx1.jpg',
+        'http://localhost:3000/img/gx2.jpg',
+        'http://localhost:3000/img/gx3.jpg'
+    ]
+})
+// happyItem.save(function(err){
+//     if(err){
+//         return console.log(err)
+//     }
+//     console.log('数据插入成功')
+//     // 模型.find方法查询
+//     Happy.find({id: 'fn0001'},function(err, result){
+//         if(err){
+//             return console.error(err);
+//         }
+//         console.log('查询结果：')
+//         console.log(result)
+//     })
+// })
+
 //数据库连接e
 
 app.listen(PORT,function() {
