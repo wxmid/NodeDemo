@@ -78,28 +78,12 @@ app.post('/reqBody',function (req,res) {
     res.json(req.body);
 })
 
-app.post('/s', function (req, res) {
-    // res.send({userName:req.body.userName,password:req.body.password});
-    // console.log(req.body.userName);
-    Happy.find({id: 'fn0001'},function(err, result){
-        if(err){
-            return console.error(err);
-        }
-        console.log('查询结果：')
-        console.log(result);
-        res.json(result);
-    })
-})
-
-//以下是接口e
-
-//数据库连接s
 //创建一个schema
 var happycheme = {
-    "id":String,
-    "user_id":String,
-    "isOriginal":Boolean,
-    "headImg":String,
+    // "id":String,
+    user_id:String,
+    isOriginal:Boolean,
+    headImg:String,
     nickName:String,
     publishTime:String,
     abstract:String,
@@ -107,37 +91,65 @@ var happycheme = {
 }
 // 创建一个模型（就是一个类）
 var Happy = mongoose.model('happy',happycheme);
+app.post('/createFunny',function (req, res) {
 //new 一个实例
-var happyItem = new Happy({
-    id:'fn0001',
-    user_id:'',
-    isOriginal:true,
-    headImg:'http://localhost:3000/img/head1.jpg',
-    nickName:'GirlLog',
-    publishTime:'2018-04-19 10:52',
-    abstract:'老婆不喜欢家里的画眉鸟，所以平时鸟笼挂在阳台上，她不在家时我就拿进屋里逗一下。刚刚在家逗鸟，看到她下班回来了，我很自觉的把鸟笼拿去阳台，然后她说：“留意你很久了，每次我到家你就往阳台挂鸟笼，给谁发信号呢？！”我。。。',
-    thumbnailList:[
-        'http://localhost:3000/img/gx1.jpg',
-        'http://localhost:3000/img/gx2.jpg',
-        'http://localhost:3000/img/gx3.jpg'
-    ]
+    var params = req.body;
+    var happyItem = new Happy({
+        user_id:params.user_id,
+        isOriginal:params.isOriginal,
+        headImg:params.headImg,
+        nickName:params.nickName,
+        publishTime:params.publishTime,
+        abstract:params.abstract,
+        thumbnailList:params.thumbnailList
+    })
+happyItem.save(function(err){
+    if(err){
+        res.send({success:false});
+        return console.log(err)
+    } else {
+        res.send({success:true});
+        console.log('数据插入成功')
+    }
 })
-// happyItem.save(function(err){
-//     if(err){
-//         return console.log(err)
-//     }
-//     console.log('数据插入成功')
-//     // 模型.find方法查询
-//     Happy.find({id: 'fn0001'},function(err, result){
-//         if(err){
-//             return console.error(err);
-//         }
-//         console.log('查询结果：')
-//         console.log(result)
-//     })
-// })
+    
+});
 
-//数据库连接e
+app.post('/findByUserId', function (req, res) {
+    Happy.find({user_id: req.body.user_id},function(err, result){
+        if(err){
+            res.send({success:false});
+            return console.log(err)
+        } else {
+            res.send(result);
+            console.log('查询成功')
+        }
+    })
+});
+app.post('/findById', function (req, res) {
+    Happy.find({_id: req.body.id},function(err, result){
+        if(err){
+            res.send({success:false});
+            return console.log(err)
+        } else {
+            res.send(result);
+            console.log('查询成功')
+        }
+    })
+});
+app.delete('/deleteFunny', function (req, res) {
+    Happy.remove({_id: req.body.id},function(err, result){
+        if(err){
+            res.send({success:false});
+            return console.log(err)
+        } else {
+            res.send(result);
+            console.log('查询成功')
+        }
+    })
+});
+
+//以下是接口e
 
 app.listen(PORT,function() {
     console.log("服务已启动~");
