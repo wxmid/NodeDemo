@@ -47,4 +47,13 @@ sort.prototype.insertSort = function (arr) {
     return arr;
 }
 
-
+var str = "我爱北京天安门，天安门上太阳升。";
+var re = /北京|天安门/g;  //  找到北京 或者天安门 全局匹配
+var result = str.replace(re,function (_str) {
+    var rt = '';
+    for(var i=0;i < _str.length;i++) {
+        rt += "*";
+    }
+    return rt;
+})
+console.log(result);
