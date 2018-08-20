@@ -8,7 +8,7 @@ $(document).ready(function () {
    
     $.ajax({
         type: "POST",
-        url:'http://192.168.16.104:3000/s',
+        url:'http://192.168.16.104:3001/s',
         // url:'http://192.168.56.1:3000/b',
         data:{
             userName:"stuart_1",
@@ -57,3 +57,45 @@ var result = str.replace(re,function (_str) {
     return rt;
 })
 console.log(result);
+
+var str1= '2013-6-7';
+var re1 = /(\d+)(-)/g;
+var index = 0;
+var result1 = str1.replace(re1,function ($0, $1, $2) {
+    return $1 +index++;
+});
+console.log(result1);
+function getByClass(parent,classname){
+    if(!parent.getElementsByClassName){
+        return parent.getElementsByClassName(classname);
+    }
+    else{
+        var results = new Array();//用来存储所有取到的class为box的元素
+        var elems = parent.getElementsByTagName("*");
+        for(var i =0;i<elems.length;i++){
+            if(new RegExp('\\b' + classname + '\\b').test(elems[i].className)){
+                results.push(elems[i]);
+            }
+        }
+        return results;
+    }
+}
+
+var str = 'aeesseessjdssskseesalssseeedkjsssdseeseeeeee';
+
+var arr = str.split(''); //把字符串转换为数组
+str = arr.sort().join(''); //首先进行排序，这样结果会把相同的字符放在一起，然后再转换为字符串
+//alert(str);  // aaddjjkklsssssssssssssssss
+
+var value = '';
+var len = 0;
+var re = /(\w)\1+/g;  //匹配字符，且重复这个字符，重复次数至少一次。
+str.replace(re,function ($0, $1, $2, $3,$4,$5,$6) {
+    if(len < $0.length) {
+        value = $1;
+        len = $0.length;
+    } else if(len == $0.length) {
+        value += '、' + $1;
+    }
+});
+console.log("字符最多的是:"+value,"重复次数:"+len);

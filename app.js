@@ -19,11 +19,12 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(bodyParser.json()); // for parsing application/json
 app.use(multer()); // for parsing multipart/form-data
 app.use(express.static('static')); //指定静态路径
-PORT = 3000;
+PORT = 3001;
    
     //解决跨域
 app.all('*', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin","*"); //值为"*"允许所有访问
+    res.header("Access-control-Allow-Credentials","true");
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With , yourHeaderFeild");
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
     res.header("X-Powered-By",' 3.2.1')
@@ -57,7 +58,13 @@ app.get('/a:text',function (req,res) {
 });
 
 app.post('/b',function (req, res) {
-    res.send({userName:11});
+   setTimeout(() => {
+       res.send({
+       userName:11,
+       gender:1,
+       address:"杭州"
+   })
+   },2000)
     // res.send({userName:11});
     // res.sendFile()
     // res.rend();//指定浏览器渲染页面
@@ -93,6 +100,7 @@ var happycheme = {
 var Happy = mongoose.model('happy',happycheme);
 app.post('/createFunny',function (req, res) {
 //new 一个实例
+    var newName = req.files[0].path+pathLib.parse(req.files[0].originalname).ext;
     var params = req.body;
     var happyItem = new Happy({
         user_id:params.user_id,
